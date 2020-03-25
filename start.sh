@@ -11,4 +11,4 @@ echo -e "Installing Requirements \n\n"
 pip install -r requirements.txt
 
 echo -e "Running monkey \n\n"
-python monkey-client.py
+python 'monkey_client.py'

@@ -12,10 +12,16 @@ STATE_MOUNTFS = "state_mount_fs"
 STATE_RUN_CMD = "state_run_cmd"
 state = STATE_INITIAL
 
+# Machine info helps to give
+machine_info = dict()
+
 @app.route('/ping')
 def ping():
     return 'pong!'
 
+@app.route('/info')
+def get_info():
+    global state, machine_info
 
 @app.route('/state')
 def get_state():
