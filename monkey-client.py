@@ -36,11 +36,11 @@ def state_loop():
         try:
             f = open("/startup-script.lock")
             state = STATE_STARTUP_SCRIPT
+            f.close()
         except IOError:
             if state == STATE_STARTUP_SCRIPT:
                 state = STATE_STARTUP_SCRIPT_DONE
-        finally:
-            f.close()
+            
 
     threading.Timer(1.0, state_loop).start()
 
