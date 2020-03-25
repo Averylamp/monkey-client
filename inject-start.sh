@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tail -f /var/log/syslog | grep "startup-script" 2>&1 | tee /var/log/monkey-client.log &
+tail -f /var/log/syslog | grep "startup-script" >> /var/log/monkey-client.log &
 disown
 sleep 1
 echo -e "Starting forwarding of startup-script to monkey-client.log\n\n"
