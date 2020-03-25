@@ -2,7 +2,7 @@
 
 # Changes to directory of the script
 cd "$(dirname "$0")"
-apt-get -y install python3-dev
+apt-get update && apt-get -y install python3-dev
 python3 -m venv venv
 source venv/bin/activate
 
