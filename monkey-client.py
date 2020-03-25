@@ -22,12 +22,25 @@ def get_state():
     global state
     return state
 
+@app.route('/log')
 @app.route('/logs')
 def get_logs():
-    logs = "unable to open"
-    with open('/var/log/monkey-client.log', 'r') as log_file:
-        logs = log_file.read()
-    return logs
+    def logs():
+        with open('/var/log/monkey-client.log', 'r') as log_file:
+            while True:
+                yield log_file.read()
+                time.sleep(1)
+    return app.response_class(logs(), mimetype='text/plain')
+
+@app.route('/startup-log')
+@app.route('/startup-logs')
+def get_startup_logs():
+    def logs():
+        with open('/var/log/startup-script.log', 'r') as log_file:
+            while True:
+                yield log_file.read()
+                time.sleep(1)
+    return app.response_class(logs(), mimetype='text/plain')
 
 
 def state_loop():
