@@ -19,7 +19,9 @@ done
 touch /startup-script.lock
 
 mkdir -p /home/monkey
-git clone https://github.com/Averylamp/monkey-client.git /home/monkey/monkey-client
+git clone -b feature/alamp/cloud-instance-abstraction https://github.com/Averylamp/monkey-client.git /home/monkey/monkey-client
+
+
 
 echo -e "Starting installation of python3-dev venv \n\n"
 apt-get update && apt-get -y install python3-venv
