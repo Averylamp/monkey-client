@@ -1,5 +1,21 @@
 #!/bin/bash
 echo -e "Starting forwarding of startup-script to monkey-client.log\n\n" >> /var/log/monkey-client.log
+
+all_metadata_keys=$(curl -s http://metadata/computeMetadata/v1/instance/attributes/ -H "Metadata-Flavor: Google")
+for key in $all_metadata_keys;
+do
+    value=$(curl -s http://metadata/computeMetadata/v1/instance/attributes/$key -H "Metadata-Flavor: Google")
+    pattern=" |'|\n"
+    if [[ "$value" =  *[[:space:]]* ]]    # Checks for spaces
+    then
+        echo "Skipping env variable for: $key"
+    else
+        echo "Adding env variable for: $key"
+        echo "$key=$value"
+        export $key="$value" || echo "Failed to export $key"
+    fi
+done
+
 touch /startup-script.lock
 
 mkdir -p /home/monkey
