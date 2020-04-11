@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 app = Flask(__name__)
 
 import os
@@ -33,10 +33,10 @@ def get_info():
     global MONKEY_INSTANCE_PROJECT, \
         MONKEY_INSTANCE_ZONE, \
         MONKEY_INSTANCE_NAME
-    return json.jsonify({
-        "name": MONKEY_INSTANCE_NAME,
-        "project": MONKEY_INSTANCE_PROJECT,
-        "zone" : MONKEY_INSTANCE_ZONE
+    return jsonify({
+        "machine_name": MONKEY_INSTANCE_NAME,
+        "machine_project": MONKEY_INSTANCE_PROJECT,
+        "machine_zone" : MONKEY_INSTANCE_ZONE
     })
 
 @app.route('/state')
