@@ -1,4 +1,4 @@
-from monkey_client import app
+from monkey_client import application
 
 if __name__ == "__main__":
-    app.run()
+    application.run()
