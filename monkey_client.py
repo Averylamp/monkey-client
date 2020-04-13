@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify
 app = Flask(__name__)
 
 import os
 import time
 import threading
+import json
 
 STATE_INITIAL = "state_initial"
 STATE_STARTUP_SCRIPT = "state_startup_script"
@@ -11,6 +12,14 @@ STATE_STARTUP_SCRIPT_DONE = 'state_stateup_script_done'
 STATE_MOUNTFS = "state_mount_fs"
 STATE_RUN_CMD = "state_run_cmd"
 state = STATE_INITIAL
+
+MONKEY_INSTANCE_PROJECT = None
+MONKEY_INSTANCE_ZONE    = None
+MONKEY_INSTANCE_NAME    = os.uname()[1]
+project_zone_string = os.environ.get("MONKEY_PROJECT_ZONE", None)
+if project_zone_string:
+    MONKEY_INSTANCE_PROJECT = project_zone_string.split("/")[1]
+    MONKEY_INSTANCE_ZONE = project_zone_string.split("/")[3]
 
 # Machine info helps to give
 machine_info = dict()
@@ -21,7 +30,14 @@ def ping():
 
 @app.route('/info')
 def get_info():
-    global state, machine_info
+    global MONKEY_INSTANCE_PROJECT, \
+        MONKEY_INSTANCE_ZONE, \
+        MONKEY_INSTANCE_NAME
+    return jsonify({
+        "machine_name": MONKEY_INSTANCE_NAME,
+        "machine_project": MONKEY_INSTANCE_PROJECT,
+        "machine_zone" : MONKEY_INSTANCE_ZONE
+    })
 
 @app.route('/state')
 def get_state():
