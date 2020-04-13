@@ -12,3 +12,4 @@ pip install -r requirements.txt
 
 echo -e "Running monkey \n\n"
 python 'monkey_client.py'
+detach
