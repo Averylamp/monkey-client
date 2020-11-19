@@ -67,7 +67,7 @@ def get_startup_logs():
 @application.route('/config', methods=['GET', 'PUT'])
 @application.route('/config/', methods=['GET', 'PUT'])
 def get_set_config():
-    CONFIG_LOCATION = '/var/log/exp-config.json'
+    CONFIG_LOCATION = 'monkey-logged-exp-config.json'
 
     if request.method == 'PUT':
         # Config update allowed only from localhost
