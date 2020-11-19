@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 application = Flask(__name__)
 
 import os
@@ -63,6 +63,29 @@ def get_startup_logs():
                 yield log_file.read()
                 time.sleep(1)
     return application.response_class(logs(), mimetype='text/plain')
+
+@application.route('/config', methods=['GET', 'PUT'])
+@application.route('/config/', methods=['GET', 'PUT'])
+def get_set_config():
+    CONFIG_LOCATION = '/var/log/exp-config.json'
+
+    if request.method == 'PUT':
+        # Config update allowed only from localhost
+        if request.remote_addr != '127.0.0.1':
+            abort(403)
+        with open(CONFIG_LOCATION, 'w') as f:
+            f.write(json.dumps(request.json))
+        return '', 204
+
+    # Get config
+    try:
+        with open(CONFIG_LOCATION, 'r') as f:
+            return jsonify({
+                'ok': True,
+                'data': json.loads(f.read()),
+                })
+    except FileNotFoundError:
+        return jsonify({'ok': False})
 
 
 def state_loop():
